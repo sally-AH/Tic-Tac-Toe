@@ -9,18 +9,29 @@
 </head>
 <body>
     <div class="container">
-        <h1>Tic Tac Toe</h1>
-        <input type="reset" value="Restart">
-        <div class="game-square">
-            <div class="box" id="box0"></div>
-            <div class="box" id="box1"></div>
-            <div class="box" id="box2"></div>
-            <div class="box" id="box3"></div>
-            <div class="box" id="box4"></div>
-            <div class="box" id="box5"></div>
-            <div class="box" id="box6"></div>
-            <div class="box" id="box7"></div>
-            <div class="box" id="box8"></div>
+        <h1 id="playerText">Tic Tac Toe</h1>
+        <div class="turn">
+
+        </div>
+
+        <div class="scores">
+            <div>player X: <span id="player1">0</span> </div>
+            <div><span id="current-turn">x</span> turn</div>
+            <div>Draw: <span id="draw">0</span> </div>
+            <div>player O: <span id="player2">0</span> </div>
+            <button id="restartBtn"><img src="icons8-reset-48.png" alt=""></button>
+        </div>
+
+        <div id="gameboard">
+            <div class="box" id="0"></div>
+            <div class="box" id="1"></div>
+            <div class="box" id="2"></div>
+            <div class="box" id="3"></div>
+            <div class="box" id="4"></div>
+            <div class="box" id="5"></div>
+            <div class="box" id="6"></div>
+            <div class="box" id="7"></div>
+            <div class="box" id="8"></div>
         </div>
     </div>
     <script src="script.js"></script>
