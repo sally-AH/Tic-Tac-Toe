@@ -1,97 +1,33 @@
-// let playerText = document.getElementById('playerText')
-// let restartBtn = document.getElementById('restartBtn')
-// let boxes = Array.from(document.getElementsByClassName('box'))
-
-// let winnerIndicator = getComputedStyle(document.body).getPropertyValue('--winning-blocks')
-
-// const O_TEXT = "O"
-// const X_TEXT = "X"
-// let currentPlayer = X_TEXT
-// let spaces = Array(9).fill(null)
-
-// const startGame = () => {
-//     boxes.forEach(box => box.addEventListener('click', boxClicked))
-// }
-
-// function boxClicked(e) {
-//     const id = e.target.id
-
-//     if(!spaces[id]){
-//         spaces[id] = currentPlayer
-//         e.target.innerText = currentPlayer
-
-//         if(playerHasWon() !==false){
-//             playerText.innerHTML = `${currentPlayer} has won!`
-//             let winning_blocks = playerHasWon()
-
-//             winning_blocks.map( box => boxes[box].style.backgroundColor=winnerIndicator)
-//             return
-//         }
-
-//         currentPlayer = currentPlayer == X_TEXT ? O_TEXT : X_TEXT
-//     }
-// }
-
-// const winningCombos = [
-//     [0,1,2],
-//     [3,4,5],
-//     [6,7,8],
-//     [0,3,6],
-//     [1,4,7],
-//     [2,5,8],
-//     [0,4,8],
-//     [2,4,6]
-// ]
-
-// function playerHasWon() {
-//     for (const condition of winningCombos) {
-//         let [a, b, c] = condition
-
-//         if(spaces[a] && (spaces[a] == spaces[b] && spaces[a] == spaces[c])) {
-//             return [a,b,c]
-//         }
-//     }
-//     return false
-// }
-
-// restartBtn.addEventListener('click', restart)
-
-// function restart() {
-//     spaces.fill(null)
-
-//     boxes.forEach( box => {
-//         box.innerText = ''
-//         box.style.backgroundColor=''
-//     })
-
-//     playerText.innerHTML = 'Tic Tac Toe'
-
-//     currentPlayer = X_TEXT
-// }
-
-// startGame()
-
 var winPatterns = [
+    // h
     [0,1,2],
     [3,4,5],
     [6,7,8],
+    //v
     [0,3,6],
     [1,4,7],
     [2,5,8],
+    //d
     [0,4,8],
     [2,4,6]
 ];
 let usedCells = [];
 let boxes = Array.from(document.getElementsByClassName('box'));
-let resetBtn = document.getElementById('restartBtn');
-var turn = 1;
+let resetBtn1 = document.getElementById('restartBtn1');
+let resetBtn2 = document.getElementById('restartBtn2');
+let turn = 1;
 let currentTurn = document.getElementById("current-turn");
 let player1Score = document.getElementById("player1");
 let player2Score = document.getElementById("player2");
 let draw = document.getElementById("draw");
 let winner = false;
 let drawScore = 0;
-let winnerMessage = document.het
+let winnerMessage = document.getElementById("winner");
+let overlay = document.getElementById("overlay");
+let closeOverlay = document.getElementsByClassName("colse");
+var div = document.getElementById("strike");
+
+
 let player1 = {
     symbol: 'X', moves: [], score: 0
 }
@@ -119,36 +55,61 @@ function show_score (){
 
 function check_winner(player) {
     if (!winner) {
-        winPatterns.forEach(pattern => {
-            if(pattern.every((element, index) => element === player.moves[index])){
-                alert("you won");
-                winner = true
+        winPatterns.some(pattern => {
+            if(pattern.every (index => player.moves.includes(index))){
+                winner = true;
                 player.score++;
                 show_score();
-                reset();
+                showDiv(pattern);
+                setTimeout(show_message,1000,player)
             }
         })
     }
-    if (!winner && usedCells.length==9) {
+    if (!winner && usedCells.length == 9) {
         drawScore++;
+        console.log("draw score "+drawScore);
         draw.innerHTML = drawScore;
-        reset();
+        overlay.style.display = "flex";
+        winnerMessage.innerHTML = "DRAW"
     }
-
 }
-
+function show_message(player){
+    overlay.style.display = "flex";
+    winnerMessage.innerHTML = "The winner is "+player.symbol;
+}
 function reset() {
     boxes.forEach(box => {
         box.innerHTML = '';
-    })
+    });
+    winner = false;
     usedCells = [];
     player1.moves = [];
     player2.moves = [];
     currentTurn.innerHTML = 'x';
+    overlay.style.display = "none";
+    div.style.display = "none";
+    div.className = "";
+
 }
 
-resetBtn.addEventListener('click', reset)
+function restart(){
+    boxes.forEach(box => {
+        box.innerHTML = '';
+    });
+    winner = false;
+    usedCells = [];
+    player1.moves = [];
+    player2.moves = [];
+    currentTurn.innerHTML = 'x';
+    player1.score = 0
+    player2.score = 0
+    show_score();
+    div.style.display = "none";
+    div.className = "";
+}
 
+resetBtn1.addEventListener('click', restart);
+resetBtn2.addEventListener('click', reset);
 for(let i= 0;i<boxes.length ;i++){
     boxes[i].addEventListener('click', function (){
         if(isUsed(i)){
@@ -156,17 +117,46 @@ for(let i= 0;i<boxes.length ;i++){
         }else{
             if (!turn) {
                 toggle_player(player1, i);
+                turn = 1;
                 check_winner(player1);
                 currentTurn.innerHTML = player2.symbol;
-                turn = 1;
             }else {
                 toggle_player(player2, i);
+                turn = 0;
                 check_winner(player2);
                 currentTurn.innerHTML = player1.symbol;
-                turn = 0;
+
             }
         }
     })
 }
 
+function showDiv(pattern) {
+    if (pattern.every((value, index) => value === [0, 1, 2][index])){
+        div.classList.add("strike-row1");
+    }
+    else if (pattern.every((value, index) => value === [3, 4, 5][index])){
+        div.classList.add("strike-row2");
+    }
+    else if (pattern.every((value, index) => value === [6, 7, 8][index])){
+        div.classList.add("strike-row3");
+    }
+    else if (pattern.every((value, index) => value === [0, 3, 6][index])){
+        div.classList.add("strike-col1");
+    }
+    else if (pattern.every((value, index) => value === [1, 4, 7][index])){
+        div.classList.add("strike-col2");
+    }
+    else if (pattern.every((value, index) => value === [2, 5, 8][index])){
+        div.classList.add("strike-col3");
+    }
+    else if (pattern.every((value, index) => value === [0, 4, 8][index])){
+        div.classList.add("strike-diagonal1");
+    }
+    else if (pattern.every((value, index) => value === [2, 4, 6][index])){
+        div.classList.add("strike-diagonal2");
+    }
+    div.style.display = "block";
+}
+  
 

@@ -5,13 +5,15 @@
 }
 
 :root {
-    --orange: #F2C14E;
-    --winning-blocks: #2d414b;
+    --orange: #435B66;
+    --winning-blocks: #EAB2A0;
+    --winning-blocks2: #A76F6F;
 }
 
 body {
     color: var(--orange);
     font-family: 'Finger Paint', cursive;
+    background: linear-gradient(135deg, #EAB2A0, #A76F6F);
 }
 h1 {
     font-size: 54px;
@@ -25,8 +27,38 @@ h1 {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    background-color: #37505C;
+    /* background-color: #EAB2A0; */
 }
+#overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(45, 67, 86, 0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+.message {
+    position: absolute;
+    height: 30%;
+    min-height: 200px;
+    width: 100%;
+    background-color: #A76F6F;
+    z-index: 2;
+    font-size: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    border-top: 1 px solid #19375b;
+    border-bottom: 1 px solid #19375b;
+    box-shadow: 0 10px 20px #000;
+
+}
+
+
 .scores {
     display: flex;
     align-items: center;
@@ -38,6 +70,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     margin-top: 40px;
+    position: relative;
 }
 .box {
     height: 100px;
@@ -63,14 +96,9 @@ h1 {
 } 
 button {
     background-color: #37505C;
-    /* padding: 10px 20px; */
     border-radius: 10px;
-    /* background-color: var(--orange); */
-    /* color: #333; */
     border-color: var(--orange);
-    /* font-size: 18px; */
     transition: 200ms transform;
-    /* font-weight: 600; */
     width: 40px;
     height: 40px;
     display: flex;
@@ -87,8 +115,94 @@ button:hover {
     cursor: pointer;
     transform: translateY(-2px);
 }
-
-.strike {
+#strike {
+    display: block;
+    position: absolute;
     text-decoration: line-through;
-    color: var(--winning-blocks);
+    background-color: var(--winning-blocks2);
+}
+  
+@keyframes drawLine {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+}
+
+@keyframes drawLine2 {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 100%;
+    }
+}
+
+@keyframes drawLine3 {
+    0% {
+        width: 0;
+    }
+    100% {
+        width: 100%;
+    }
+}
+
+  
+
+.strike-row1 {
+    width: 100%;
+    height: 4px;
+    top: 15%;
+    animation: drawLine .3s linear forwards;
+}
+.strike-row2 {
+    width: 100%;
+    height: 4px;
+    top: 48%;
+    animation: drawLine .3s linear forwards;
+}
+.strike-row3 {
+    width: 100%;
+    height: 4px;
+    top: 83%;
+    animation: drawLine .3s linear forwards;
+}
+
+.strike-col1 {
+    width: 4px;
+    height: 100%;
+    left: 15%;
+    animation: drawLine2 .3s linear forwards;
+}
+.strike-col2 {
+    width: 4px;
+    height: 100%;
+    left: 48%;
+    animation: drawLine2 .3s linear forwards;
+}
+.strike-col3 {
+    width: 4px;
+    height: 100%;
+    left: 83%;
+    animation: drawLine2 .3s linear forwards;
+}
+
+.strike-diagonal1 {
+    width: 90%;
+    height: 4px;
+    left: 5px;
+    transform: skewY(45deg);
+    transform-origin: top left;
+    animation: drawLine3 .3s linear forwards;
+}
+
+.strike-diagonal2 {
+    width: 90%;
+    height: 4px;
+    top: 100%;
+    transform: skewY(-45deg);
+    transform-origin: top left;
+    animation: drawLine3 .3s linear forwards;
 }
